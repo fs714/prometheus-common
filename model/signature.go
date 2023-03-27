@@ -60,6 +60,14 @@ func labelSetToFingerprint(ls LabelSet) Fingerprint {
 
 	labelNames := make(LabelNames, 0, len(ls))
 	for labelName := range ls {
+		if labelName == "fingerprint" {
+			fp, err := FingerprintFromString(string(ls[labelName]))
+			if err != nil {
+				fp = 666666
+			}
+			return fp
+		}
+
 		labelNames = append(labelNames, labelName)
 	}
 	sort.Sort(labelNames)
@@ -84,6 +92,14 @@ func labelSetToFastFingerprint(ls LabelSet) Fingerprint {
 
 	var result uint64
 	for labelName, labelValue := range ls {
+		if labelName == "fingerprint" {
+			fp, err := FingerprintFromString(string(ls[labelName]))
+			if err != nil {
+				fp = 666666
+			}
+			return fp
+		}
+
 		sum := hashNew()
 		sum = hashAdd(sum, string(labelName))
 		sum = hashAddByte(sum, SeparatorByte)
